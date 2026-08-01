@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: #2d1b4e;
+    --primary-light: #1a0d2e;
+    --accent: #00d4ff;
+    --accent-light: #00bcd4;
+    --background: #ffffff;
+    --surface: #f8f9fa;
+    --border: #ecf0f1;
+    --text-primary: #2c3e50;
+    --text-secondary: #7f8c8d;
+  }
+
+  body {
+    color: var(--text-primary);
+    background: var(--background);
+  }
+}
+
+@layer components {
+  /* 优化文章内容的段落间距 */
+  .prose {
+    @apply text-text-primary;
+  }
+
+  .prose p {
+    @apply mb-6 leading-relaxed;
+  }
+
+  .prose p:last-child {
+    @apply mb-0;
+  }
+
+  .prose h1 {
+    @apply text-4xl font-bold mb-6 mt-8 text-primary;
+  }
+
+  .prose h2 {
+    @apply text-3xl font-semibold mb-4 mt-8 text-primary;
+  }
+
+  .prose h3 {
+    @apply text-2xl font-semibold mb-3 mt-6 text-primary;
+  }
+
+  .prose h4 {
+    @apply text-xl font-semibold mb-2 mt-4 text-primary;
+  }
+
+  .prose ul,
+  .prose ol {
+    @apply mb-6 ml-6;
+  }
+
+  .prose li {
+    @apply mb-2;
+  }
+
+  .prose li:last-child {
+    @apply mb-0;
+  }
+
+  .prose strong {
+    @apply font-semibold text-primary;
+  }
+
+  .prose a {
+    @apply text-accent hover:text-accent-light underline;
+  }
+
+  .prose blockquote {
+    @apply border-l-4 border-accent pl-4 italic my-6;
+  }
+
+  .prose code {
+    @apply bg-surface px-1 py-0.5 rounded text-sm;
+  }
+
+  .prose pre {
+    @apply bg-surface p-4 rounded-lg overflow-x-auto my-6;
+  }
+
+  .prose hr {
+    @apply my-8 border-border;
+  }
+
+  /* Short Answer 部分特殊样式：第一个H2（Short Answer）后面的段落 */
+  .prose h2:first-of-type + p {
+    @apply bg-accent/10 border-l-4 border-accent pl-4 py-3 rounded text-lg font-semibold mb-6;
+  }
+
+  /* Related Concepts 链接样式 */
+  .prose .article-link {
+    @apply text-accent hover:text-accent-light;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .prose .article-link:hover {
+    text-decoration: underline;
+  }
+
+  /* 文章标题锚点样式 */
+  .prose h2[id],
+  .prose h3[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  .prose h2[id]:target,
+  .prose h3[id]:target {
+    @apply text-accent;
+  }
+
+  /* Mobile Table of Contents 样式优化 */
+  .mobile-toc-button {
+    @apply focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2;
+  }
+
+  .mobile-toc-nav {
+    @apply max-h-96 overflow-y-auto;
+  }
+
+  .mobile-toc-nav::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  .mobile-toc-nav::-webkit-scrollbar-track {
+    @apply bg-surface rounded;
+  }
+
+  .mobile-toc-nav::-webkit-scrollbar-thumb {
+    @apply bg-border rounded hover:bg-text-secondary;
+  }
+}
+

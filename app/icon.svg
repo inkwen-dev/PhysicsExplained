@@ -1,0 +1,7 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 圆角背景 - 深紫色 -->
+  <rect width="32" height="32" rx="6" fill="#2d1b4e"/>
+  <!-- 字母 P - 使用粗线条确保小尺寸清晰度，青色 -->
+  <path d="M9 7 L9 25 M9 7 L19 7 Q23 7 23 11 L23 16 Q23 20 19 20 L9 20" stroke="#00d4ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
