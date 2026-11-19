@@ -12,7 +12,7 @@
 - 正式地址：`https://physicsexplained.org`；文章路径保持 `/<slug>`，不添加语言或文章目录前缀。
 - 构建：`npm run build`，产物 `out/`；禁止上传源码、环境文件、`.git` 和 `local-data/`。
 - `npm run build`会自动执行postbuild：`scripts/normalize-static-segments.mjs`为Windows导出时错误拆成目录的RSC文件添加浏览器所需的扁平文件名，保留原文件；不要绕开npm脚本只运行next build后直接上传。当前锁定Next.js 16.1.1需要此兼容处理，上游升级后先验证再移除。
-- 广告参数：`config/ads.ts`，GA4：`app/layout.tsx`。浏览器请求、真实展示、收入分别验收。
+- 广告参数：`config/ads.ts`，GA4与GTM：`app/layout.tsx`。浏览器请求、真实展示、收入分别验收。
 
 ## 二、权限与首次上线
 
@@ -55,3 +55,9 @@
 先区分TLS握手失败、HTTP403、脚本成功但无填充和真实展示；GET CODE与Active不能证明有广告。当前按用户决定暂不排查403、不联系客服。横幅、原生广告未填充时隐藏标签及占位；横幅空响应20秒后清理iframe的云端模拟验收已通过，不能据此认定平台已恢复投放。启用Social Bar时站内普通链接使用完整文档导航，避免浮层残留；文章进入About后无Social Bar已通过检查。
 
 各类页面位置、实际广告位ID/尺寸、加载阈值、停投开关与更新步骤见[广告配置与维护](03-广告配置与维护.md)。更新广告后须分别检查素材成功、失败/无填充、桌面/窄屏、目录交互及About/404；模拟结果与真实展示分开记录。最新版本和验收范围见[上线记录](02-上线记录.md)。
+
+## 六、统计维护
+
+全站根布局 `app/layout.tsx` 接入GTM容器 `GTM-MBKZZW34`：afterInteractive执行官方启动片段，向共用dataLayer推送gtm.start/gtm.js，再异步加载容器；body开头包含noscript回退。依据[Google安装说明](https://support.google.com/tagmanager/answer/14847097)。原有直连GA4 `G-7NNNN03VPV` 保留（可由NEXT_PUBLIC_GA_ID覆盖）。2026-11-19公开GTM脚本返回200，出现GA4 ID `G-NBDQK148KC`，不能据此证明采集已到账。
+
+修改容器ID需要按本站流程重新构建上线；GTM内部标签/触发器修改则在GTM后台预览、核对目标统计属性后发布，不自动获得后台发布授权。若以后把同一个GA4 ID迁入GTM，须移除对应直连初始化，防止重复page_view；不同属性各记一次不能直接当作同一属性重复。验收顺序：正式HTML含正确ID及启动事件 → 浏览器确认容器执行及collect请求 → GA4实时/DebugView核对目标属性。前三者中的前两项也不能替代后台数据验收。当前浏览器执行/后台数据待验限制见上线记录。
