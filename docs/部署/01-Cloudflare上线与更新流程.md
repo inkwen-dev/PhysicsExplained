@@ -48,6 +48,8 @@
 
 ## 五、广告维护
 
+云端复核方法：先用云端浏览器打开正式文章，再直接请求GET CODE的原始脚本并携带正式文章Referer，记录目标HTTP状态、响应正文、时间及Ray ID；必要时用纯HTML嵌入原码，隔离框架与组件。2026-11-19云端脚本返回403和 `Your request was blocked.`，纯HTML亦加载失败，尚未恢复展示。云端机房请求失败不能推定所有真实访客均失败；广告域名的Cloudflare拒绝响应也不能通过修改本站Worker防护直接解决。具体证据见[上线记录](02-上线记录.md)。用户当前要求不联系客服。
+
 在本人已授权的外部浏览器打开Adsterra Websites，展开physicsexplained.org，核对站点Approved、NativeBanner_1（28288157）Active及GET CODE。当前容器为 `container-94c6902af301c499880abc8393d41008`，脚本按后台原码填写 `config/ads.ts`，不自行猜替代域名。2026-11-19后台给出 `https://bauval.org/21/94c6902af301c499880abc8393d41008`；本次已替换旧TLS失败地址，但新地址在正式浏览器仍403，真实展示未通过。
 
 先区分TLS握手失败、HTTP403、脚本成功但无填充和真实展示；GET CODE与Active不能证明有广告。Codes to update本次显示Nothing to update right now。必要时向平台提交站点、广告位ID、实际脚本及错误，待平台回复；外发客服消息另需明确授权，不自动创建额外广告位或改用Popunder。脚本加载失败时组件隐藏整个广告区域；脚本成功却无填充的收起及站内软导航重新初始化仍未验收。
