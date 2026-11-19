@@ -48,7 +48,7 @@ export const adConfig: AdConfig = {
   },
   nativeBanner: {
     containerId: 'container-94c6902af301c499880abc8393d41008',
-    scriptSrc: 'https://pl28388656.effectivegatecpm.com/94c6902af301c499880abc8393d41008/invoke.js',
+    scriptSrc: 'https://bauval.org/21/94c6902af301c499880abc8393d41008',
   },
 };
 

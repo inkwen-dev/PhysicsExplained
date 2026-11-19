@@ -14,6 +14,7 @@ for (const file of articles) {
   if (slugs.has(slug)) throw new Error(`Duplicate article slug: ${slug}`);
   slugs.add(slug);
   const html = await readFile(`out/${slug}.html`, 'utf8');
+  await access(`out/${slug}/__next.$d$slug.__PAGE__.txt`);
   if (!html.includes(`<link rel="canonical" href="https://physicsexplained.org/${slug}"`)) throw new Error(`Missing canonical: ${slug}`);
   if (/name="robots" content="noindex/.test(html)) throw new Error(`Unexpected noindex: ${slug}`);
 }

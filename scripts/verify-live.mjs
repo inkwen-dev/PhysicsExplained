@@ -11,6 +11,7 @@ for (const file of await walk('out/categories')) if (file.endsWith('.html')) url
 const homepage = await readFile('out/index.html', 'utf8');
 for (const match of homepage.matchAll(/(?:src|href)="(\/_next\/[^"?]+(?:\?[^" ]*)?)"/g)) urls.push(`${origin}${match[1].replaceAll('&amp;', '&')}`);
 urls.push('https://www.physicsexplained.org', 'http://physicsexplained.org');
+for (const slug of ['why-do-mirrors-reflect', 'what-is-light', 'how-do-lenses-work']) urls.push(`${origin}/${slug}/__next.%24d%24slug.__PAGE__.txt?_rsc=verification`);
 const results = [];
 async function check(url, expected = 200) {
   try {

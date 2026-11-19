@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Script from 'next/script';
 import { cn } from '@/lib/utils';
 
@@ -23,6 +23,7 @@ export default function NativeBanner({
 }: NativeBannerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const scriptLoadedRef = useRef(false);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     // 确保容器存在后再加载广告
@@ -37,11 +38,14 @@ export default function NativeBanner({
   };
 
   const handleScriptError = () => {
+    setFailed(true);
     // 广告加载失败时，隐藏容器
     if (containerRef.current) {
       containerRef.current.style.display = 'none';
     }
   };
+
+  if (failed) return null;
 
   return (
     <div className={cn('mt-8 pt-8 border-t border-border', wrapperClassName)}>

@@ -11,6 +11,7 @@
 - Worker：`physics-explained`，配置见根目录 `cloudflare.config.ts`。
 - 正式地址：`https://physicsexplained.org`；文章路径保持 `/<slug>`，不添加语言或文章目录前缀。
 - 构建：`npm run build`，产物 `out/`；禁止上传源码、环境文件、`.git` 和 `local-data/`。
+- `npm run build`会自动执行postbuild：`scripts/normalize-static-segments.mjs`为Windows导出时错误拆成目录的RSC文件添加浏览器所需的扁平文件名，保留原文件；不要绕开npm脚本只运行next build后直接上传。当前锁定Next.js 16.1.1需要此兼容处理，上游升级后先验证再移除。
 - 广告参数：`config/ads.ts`，GA4：`app/layout.tsx`。浏览器请求、真实展示、收入分别验收。
 
 ## 二、权限与首次上线
@@ -44,3 +45,9 @@
 - 不删除旧版本或验证TXT，不修改其他站DNS，不新增付费承诺。
 
 官方依据：[静态资源](https://developers.cloudflare.com/workers/static-assets/)、[cf部署预构建目录](https://developers.cloudflare.com/cf/projects/)。配置与API执行前按当前文档核对。
+
+## 五、广告维护
+
+在本人已授权的外部浏览器打开Adsterra Websites，展开physicsexplained.org，核对站点Approved、NativeBanner_1（28288157）Active及GET CODE。当前容器为 `container-94c6902af301c499880abc8393d41008`，脚本按后台原码填写 `config/ads.ts`，不自行猜替代域名。2026-11-19后台给出 `https://bauval.org/21/94c6902af301c499880abc8393d41008`；本次已替换旧TLS失败地址，但新地址在正式浏览器仍403，真实展示未通过。
+
+先区分TLS握手失败、HTTP403、脚本成功但无填充和真实展示；GET CODE与Active不能证明有广告。Codes to update本次显示Nothing to update right now。必要时向平台提交站点、广告位ID、实际脚本及错误，待平台回复；外发客服消息另需明确授权，不自动创建额外广告位或改用Popunder。脚本加载失败时组件隐藏整个广告区域；脚本成功却无填充的收起及站内软导航重新初始化仍未验收。

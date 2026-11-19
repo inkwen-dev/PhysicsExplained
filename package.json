@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "node scripts/normalize-static-segments.mjs",
     "start": "next start",
     "lint": "next lint",
     "verify:static": "node scripts/verify-static.mjs",
