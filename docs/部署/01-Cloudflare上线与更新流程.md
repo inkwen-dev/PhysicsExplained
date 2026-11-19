@@ -6,7 +6,7 @@
 
 - 通用方法：[全局Cloudflare SOP](../../../../Projects/我的AI助理/共用工具与SOP/Cloudflare/01-网站上线与更新SOP.md)。跨电脑先定位个人库，读不到应说明缺口。
 - 广告策略：[全局Adsterra规范](../../../../Projects/我的AI助理/共用工具与SOP/网站广告/01-Adsterra广告形式与接入规范.md)。
-- GitHub：`leiwenfans-hue/PhysicsExplained`。
+- GitHub：`inkwen-dev/PhysicsExplained`（原 `leiwenfans-hue/PhysicsExplained` 已迁移，推送时GitHub明确提示新地址）。
 - Cloudflare账号：`75fb37f584344bc26491c8a8c4adecaa`；zone：`86af62140b311d343fcfd5d5b1bf8fdb`。
 - Worker：`physics-explained`，配置见根目录 `cloudflare.config.ts`。
 - 正式地址：`https://physicsexplained.org`；文章路径保持 `/<slug>`，不添加语言或文章目录前缀。
