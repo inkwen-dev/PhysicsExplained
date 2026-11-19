@@ -8,6 +8,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Physics Explained",
   description: "Understanding Physics, Simply Explained",
+  verification: {
+    other: { 'msvalidate.01': '047876AD313E76E677302B2848FB5DE2' },
+  },
   icons: {
     icon: [
       { url: '/favicon.ico' },

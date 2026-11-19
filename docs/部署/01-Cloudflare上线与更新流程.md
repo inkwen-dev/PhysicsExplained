@@ -13,6 +13,7 @@
 - 构建：`npm run build`，产物 `out/`；禁止上传源码、环境文件、`.git` 和 `local-data/`。
 - `npm run build`会自动执行postbuild：`scripts/normalize-static-segments.mjs`为Windows导出时错误拆成目录的RSC文件添加浏览器所需的扁平文件名，保留原文件；不要绕开npm脚本只运行next build后直接上传。当前锁定Next.js 16.1.1需要此兼容处理，上游升级后先验证再移除。
 - 广告参数：`config/ads.ts`，GA4与GTM：`app/layout.tsx`。浏览器请求、真实展示、收入分别验收。
+- Bing站点验证：`app/layout.tsx` 的 `metadata.verification.other['msvalidate.01']`，通过Next.js生成head中的meta标签。验证成功后继续保留；添加标签不等同于已在Bing后台点击验证或提交站点地图。
 
 ## 二、权限与首次上线
 
