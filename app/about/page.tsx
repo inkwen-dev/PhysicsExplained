@@ -5,6 +5,7 @@ export const dynamic = 'force-static';
 export const revalidate = false;
 
 export const metadata = {
+  alternates: { canonical: 'https://physicsexplained.org/about' },
   title: 'About | Physics Explained',
   description: 'Learn about Physics Explained and our mission',
 };

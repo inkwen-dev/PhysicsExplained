@@ -1,12 +1,26 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getCategoryBySlug, getSubcategoryBySlug } from "@/lib/content";
+import { getAllCategories, getSubcategoriesByCategory, getCategoryBySlug, getSubcategoryBySlug } from "@/lib/content";
 import { getArticlesBySubcategory } from "@/lib/content";
 import NativeBanner from "@/components/ads/NativeBanner";
 import { isAdPositionEnabled, adConfig } from "@/config/ads";
 
 interface SubcategoryPageProps {
   params: Promise<{ category: string; subcategory: string }>;
+}
+
+export function generateStaticParams() {
+  return getAllCategories().flatMap((category) =>
+    getSubcategoriesByCategory(category.slug).map((subcategory) => ({
+      category: category.slug,
+      subcategory: subcategory.slug,
+    }))
+  );
+}
+
+export async function generateMetadata({ params }: SubcategoryPageProps) {
+  const { category, subcategory } = await params;
+  return { alternates: { canonical: `https://physicsexplained.org/categories/${category}/${subcategory}` } };
 }
 
 export default async function SubcategoryPage({ params }: SubcategoryPageProps) {

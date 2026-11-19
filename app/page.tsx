@@ -4,6 +4,8 @@ import { getAllArticles } from "@/lib/content";
 import NativeBanner from "@/components/ads/NativeBanner";
 import { isAdPositionEnabled, adConfig } from "@/config/ads";
 
+export const metadata = { alternates: { canonical: 'https://physicsexplained.org' } };
+
 export default async function Home() {
   const categories = getAllCategories();
   const allArticles = await getAllArticles();

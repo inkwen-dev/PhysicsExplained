@@ -2,6 +2,19 @@
 
 A content website explaining physics topics in simple, accessible language.
 
+## Cloudflare deployment
+
+The site contains 200 Markdown articles and exports static files to `out/`.
+The original domain and article URLs remain `https://physicsexplained.org/<slug>`.
+
+- [上线与更新流程](docs/部署/01-Cloudflare上线与更新流程.md)
+- [实际上线记录](docs/部署/02-上线记录.md)
+- Build and validate: `npm run build` then `npm run verify:static`
+- Publish after authorization: `npm run deploy`
+- Check production URLs: `npm run verify:live`
+
+The older planning checklist below is historical; use deployment records for current release status.
+
 ## Project Status
 
 ✅ **Completed:**
@@ -16,7 +29,7 @@ A content website explaining physics topics in simple, accessible language.
 ### Installation
 
 ```bash
-npm install
+npm ci
 ```
 
 ### Development
@@ -31,8 +44,10 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 
 ```bash
 npm run build
-npm start
+npm run verify:static
 ```
+
+Production uses the exported `out/` directory; `next start` does not serve this static export. Use `npm run dev` for local development.
 
 ## Project Structure
 

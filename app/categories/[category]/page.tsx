@@ -1,12 +1,21 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getCategoryBySlug, getSubcategoriesByCategory } from "@/lib/content";
+import { getAllCategories, getCategoryBySlug, getSubcategoriesByCategory } from "@/lib/content";
 import { getArticlesByCategory } from "@/lib/content";
 import NativeBanner from "@/components/ads/NativeBanner";
 import { isAdPositionEnabled, adConfig } from "@/config/ads";
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
+}
+
+export function generateStaticParams() {
+  return getAllCategories().map((category) => ({ category: category.slug }));
+}
+
+export async function generateMetadata({ params }: CategoryPageProps) {
+  const { category } = await params;
+  return { alternates: { canonical: `https://physicsexplained.org/categories/${category}` } };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {

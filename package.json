@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "verify:static": "node scripts/verify-static.mjs",
+    "deploy": "npm run build && npm run verify:static && cf deploy ./out",
+    "verify:live": "node scripts/verify-live.mjs"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",
@@ -29,6 +32,7 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "autoprefixer": "^10.4.23",
+    "cf": "1.0.0-rc.1",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "^8.5.6",

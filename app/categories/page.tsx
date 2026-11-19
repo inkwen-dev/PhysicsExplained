@@ -7,6 +7,7 @@ export const dynamic = 'force-static';
 export const revalidate = false;
 
 export const metadata = {
+  alternates: { canonical: 'https://physicsexplained.org/categories' },
   title: 'Categories | Physics Explained',
   description: 'Browse all physics categories and topics',
 };
