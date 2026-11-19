@@ -97,6 +97,10 @@ PhysicsExplained/
 
 ## Documentation
 
+- [Cloudflare上线与更新流程](docs/部署/01-Cloudflare上线与更新流程.md)
+- [上线记录](docs/部署/02-上线记录.md)
+- [广告配置与维护](docs/部署/03-广告配置与维护.md)
+
 See `docs/` directory for:
 - Brand positioning and guidelines
 - Content organization standards

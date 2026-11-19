@@ -1,3 +1,4 @@
+import Banner from '@/components/ads/Banner';
 import { getAllProjects } from '@/config/projects';
 import SupportSection from '@/components/article/SupportSection';
 
@@ -102,6 +103,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      <Banner position="middle" />
     </div>
   );
 }

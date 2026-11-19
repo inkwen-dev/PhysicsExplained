@@ -1,3 +1,6 @@
+import Banner from '@/components/ads/Banner';
+import SocialBar from '@/components/ads/SocialBar';
+import { Fragment } from 'react';
 import Link from "next/link";
 import { getAllCategories, getSubcategoriesByCategory } from "@/lib/content";
 import NativeBanner from "@/components/ads/NativeBanner";
@@ -17,13 +20,15 @@ export default function CategoriesPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <SocialBar />
       <h1 className="text-4xl font-bold mb-8 text-primary">All Categories</h1>
+      <Banner position="top" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {categories.map((category) => {
+        {categories.map((category, index) => {
           const subcategories = getSubcategoriesByCategory(category.slug);
           
           return (
-            <div
+            <Fragment key={category.id}><div
               key={category.id}
               className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow border border-border"
             >
@@ -74,6 +79,8 @@ export default function CategoriesPage() {
                 </Link>
               )}
             </div>
+            {index === 2 && <div className="col-span-full"><Banner position="middle" /></div>}
+            </Fragment>
           );
         })}
       </div>

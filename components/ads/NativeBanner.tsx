@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Script from 'next/script';
+
 import { cn } from '@/lib/utils';
 
 interface NativeBannerProps {
@@ -22,54 +22,47 @@ export default function NativeBanner({
   wrapperClassName,
 }: NativeBannerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const scriptLoadedRef = useRef(false);
-  const [failed, setFailed] = useState(false);
-
+  const [filled, setFilled] = useState(false);
   useEffect(() => {
-    // 确保容器存在后再加载广告
-    if (containerRef.current && scriptLoadedRef.current) {
-      // 广告脚本会自动查找容器并渲染
-      // 这里不需要额外操作
-    }
-  }, []);
-
-  const handleScriptLoad = () => {
-    scriptLoadedRef.current = true;
-  };
-
-  const handleScriptError = () => {
-    setFailed(true);
-    // 广告加载失败时，隐藏容器
-    if (containerRef.current) {
-      containerRef.current.style.display = 'none';
-    }
-  };
-
-  if (failed) return null;
+    const node = containerRef.current;
+    if (!node) return;
+    let disposed = false;
+    let timer: ReturnType<typeof setTimeout>;
+    const script = document.createElement('script');
+    const inspect = () => {
+      const image = Array.from(node.querySelectorAll('img')).some(img => img.complete && img.naturalWidth > 10 && img.naturalHeight > 10);
+      const text = Array.from(node.querySelectorAll('a[href]')).some(a => (a.textContent?.trim().length ?? 0) > 10);
+      if (!disposed && (image || text)) { clearTimeout(timer); setFilled(true); }
+    };
+    const changes = new MutationObserver(inspect);
+    changes.observe(node, {subtree:true, childList:true, attributes:true});
+    node.addEventListener('load', inspect, true);
+    const proximity = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      proximity.disconnect();
+      script.src = scriptSrc;
+      script.async = true;
+      script.dataset.cfasync = 'false';
+      script.onerror = () => { setFilled(false); node.replaceChildren(); };
+      node.appendChild(script);
+      timer = setTimeout(() => { if (!disposed) { setFilled(false); node.replaceChildren(); } }, 20000);
+    }, {rootMargin:'600px'});
+    proximity.observe(node);
+    return () => {
+      disposed = true;
+      clearTimeout(timer);
+      proximity.disconnect(); changes.disconnect();
+      node.removeEventListener('load', inspect, true);
+      script.remove(); node.replaceChildren();
+    };
+  }, [containerId, scriptSrc]);
 
   return (
-    <div className={cn('mt-8 pt-8 border-t border-border', wrapperClassName)}>
-      {showLabel && (
-        <div className="text-xs text-text-secondary mb-2 text-center uppercase tracking-wide">
-          Advertisement
-        </div>
-      )}
-      <div className={cn(maxWidth, 'mx-auto px-4', className)}>
-        <div
-          id={containerId}
-          ref={containerRef}
-          className="min-h-[100px]"
-        />
+    <div data-ad-position="native" className={cn('ad-slot', filled && 'ad-filled', filled && wrapperClassName)}>
+      {filled && showLabel && <div className="ad-label">Advertisement</div>}
+      <div className={cn('ad-host mx-auto', maxWidth, className)}>
+        <div id={containerId} ref={containerRef} />
       </div>
-      <Script
-        data-cfasync="false"
-        src={scriptSrc}
-        strategy="lazyOnload"
-        onLoad={handleScriptLoad}
-        onError={handleScriptError}
-        async
-      />
     </div>
   );
 }
-

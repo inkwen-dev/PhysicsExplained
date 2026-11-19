@@ -3,6 +3,7 @@
 import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { flushSync } from 'react-dom';
 import SidebarTOC from './SidebarTOC';
+import Banner from '@/components/ads/Banner';
 
 interface Heading {
   id: string;
@@ -297,38 +298,47 @@ export default function ArticleContentWithTOC({ headings, hasTOC, content }: Art
 
   // 渲染文章内容（提取为函数，避免重复）
   // 无论TOC是否显示，文章内容区域都使用相同的样式，确保宽度一致
+  const html = content.replace(/(<h2[^>]*>Short Answer<\/h2>\s*)<p>/i, '$1<p class="short-answer">').replace(/<h([2-3])[^>]*>(.*?)<\/h[2-3]>/gi, (_match, level, body) => {
+    const id = body.replace(/<[^>]*>/g, '').trim().toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
+    return `<h${level} id="${id}">${body}</h${level}>`;
+  });
+  // Split only on complete h2 sections; lists, tables and paragraphs stay intact.
+  const sections = html.split(/(?=<h2\b)/i);
+  const wordCount = (value: string) => value.replace(/<[^>]*>/g, ' ').trim().split(/\s+/).length;
+  const totalWords = wordCount(html);
+  let cumulativeWords = 0;
+  let middlePlaced = false;
+  let lowerPlaced = false;
   const renderArticleContent = () => (
-    <div className="prose prose-lg mb-8 max-w-none w-full">
-      {/* 为标题添加 ID */}
-      <div
-        dangerouslySetInnerHTML={{
-          __html: content.replace(
-            /<h([2-3])[^>]*>(.*?)<\/h[2-3]>/gi,
-            (match, level, content) => {
-              const text = content.replace(/<[^>]*>/g, '').trim();
-              const id = text
-                .toLowerCase()
-                .replace(/[^\w\s-]/g, '')
-                .replace(/\s+/g, '-')
-                .replace(/-+/g, '-')
-                .trim();
-              return `<h${level} id="${id}">${content}</h${level}>`;
-            }
-          ),
-        }}
-      />
+    <div className="article-prose prose prose-lg mb-8 w-full">
+      {sections.map((section, index) => {
+        cumulativeWords += wordCount(section);
+        const nextIsSection = index < sections.length - 1;
+        const afterAnswer = /<h2[^>]*>Short Answer<\/h2>/i.test(section) && nextIsSection;
+        const middle = !middlePlaced && nextIsSection && cumulativeWords >= 350 && totalWords - cumulativeWords >= 250;
+        const lower = !middle && !lowerPlaced && nextIsSection && totalWords >= 1100 && cumulativeWords >= 800 && totalWords - cumulativeWords >= 250;
+        if (middle) middlePlaced = true;
+        if (lower) lowerPlaced = true;
+        return <div key={index}>
+          <div dangerouslySetInnerHTML={{ __html: section }} />
+          {afterAnswer && <Banner position="top" />}
+          {middle && <Banner position="middle" />}
+          {lower && <Banner position="lower" />}
+        </div>;
+      })}
     </div>
   );
 
   return (
     <>
       {/* 文章内容区域 - 始终占据整个80%容器，宽度保持一致 */}
-      <div ref={containerRef} className="w-[80%] max-w-[1400px] mx-auto px-4">
+      <div ref={containerRef} className="w-full max-w-[1200px] mx-auto article-layout">
         {/* 方案1：无transition，使用will-change优化，瞬间切换，完全消除闪烁 */}
         <div 
-          className={`will-change-[padding-right] ${showTOC && hasTOC ? 'pr-[304px]' : ''}`}
+          className={`will-change-[padding-right] ${showTOC && hasTOC ? 'lg:pr-[304px]' : ''}`}
         >
           {renderArticleContent()}
+          <div className="article-sidebar-ad"><Banner position="sidebar" /></div>
         </div>
       </div>
 
@@ -344,7 +354,7 @@ export default function ArticleContentWithTOC({ headings, hasTOC, content }: Art
       
       {/* TOC 隐藏时显示一个浮动按钮来重新显示 - 桌面端 */}
       {hasTOC && !showTOC && (
-        <div className="hidden lg:block fixed bottom-8 right-8 z-50">
+        <div className="hidden lg:block fixed bottom-8 right-8 z-40">
           <button
             onClick={handleToggleTOC}
             className="w-14 h-14 bg-accent hover:bg-accent-light text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center"

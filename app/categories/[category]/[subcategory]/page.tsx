@@ -1,3 +1,6 @@
+import Banner from '@/components/ads/Banner';
+import SocialBar from '@/components/ads/SocialBar';
+import { Fragment } from 'react';
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAllCategories, getSubcategoriesByCategory, getCategoryBySlug, getSubcategoryBySlug } from "@/lib/content";
@@ -35,6 +38,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <SocialBar />
       {/* Breadcrumb */}
       <nav className="text-sm text-text-secondary mb-4">
         <Link href="/" className="hover:text-accent">Home</Link>
@@ -56,12 +60,15 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
         </p>
       </div>
 
+      <Banner position="top" />
+      <div className="category-columns"><div>
       {/* Articles List */}
       <div>
         <h2 className="text-2xl font-semibold mb-4 text-primary">Topics</h2>
         {articles.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {articles.map((article) => (
+            {articles.map((article, index) => (
+              <Fragment key={article.id}>
               <Link
                 key={article.id}
                 href={`/${article.slug}`}
@@ -75,6 +82,9 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
                 </p>
                 <span className="text-sm text-accent">Read more →</span>
               </Link>
+              {index === 5 && articles.length >= 9 && <div className="col-span-full"><Banner position="middle" /></div>}
+              {index === 11 && articles.length >= 15 && <div className="col-span-full"><Banner position="lower" /></div>}
+              </Fragment>
             ))}
           </div>
         ) : (
@@ -82,6 +92,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
         )}
       </div>
 
+      </div><aside className="category-sidebar"><Banner position="sidebar" /></aside></div>
       {/* 广告位置：文章列表之后 */}
       {isAdPositionEnabled('subcategoryAfterList') && (
         <NativeBanner

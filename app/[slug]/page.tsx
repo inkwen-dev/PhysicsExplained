@@ -1,3 +1,6 @@
+import Banner from '@/components/ads/Banner';
+import SocialBar from '@/components/ads/SocialBar';
+import { Fragment } from 'react';
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Metadata } from "next";
@@ -142,6 +145,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <>
+      <SocialBar />
       {/* 结构化数据 */}
       <script
         type="application/ld+json"

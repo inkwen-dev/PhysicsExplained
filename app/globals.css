@@ -12,7 +12,7 @@
     --surface: #f8f9fa;
     --border: #ecf0f1;
     --text-primary: #2c3e50;
-    --text-secondary: #7f8c8d;
+    --text-secondary: #59676d;
   }
 
   body {
@@ -40,11 +40,11 @@
   }
 
   .prose h2 {
-    @apply text-3xl font-semibold mb-4 mt-8 text-primary;
+    @apply text-2xl sm:text-3xl font-semibold mb-4 mt-8 text-primary;
   }
 
   .prose h3 {
-    @apply text-2xl font-semibold mb-3 mt-6 text-primary;
+    @apply text-xl sm:text-2xl font-semibold mb-3 mt-6 text-primary;
   }
 
   .prose h4 {
@@ -53,7 +53,8 @@
 
   .prose ul,
   .prose ol {
-    @apply mb-6 ml-6;
+    @apply mb-6 ml-0;
+    padding-inline-start: 1.4em;
   }
 
   .prose li {
@@ -89,7 +90,7 @@
   }
 
   /* Short Answer 部分特殊样式：第一个H2（Short Answer）后面的段落 */
-  .prose h2:first-of-type + p {
+  .prose .short-answer {
     @apply bg-accent/10 border-l-4 border-accent pl-4 py-3 rounded text-lg font-semibold mb-6;
   }
 
@@ -137,3 +138,28 @@
   }
 }
 
+
+.ad-slot { position: relative; height: 0; min-width: 0; overflow: hidden; }
+.ad-host { position: absolute; inset-inline: 0; top: 0; visibility: hidden; }
+.ad-slot.ad-filled { height: auto; overflow: visible; margin-block: 2rem; }
+.ad-filled .ad-host { position: static; visibility: visible; }
+.ad-label { color: var(--text-secondary); font-size: .75rem; line-height: 1.5; text-align: center; margin-bottom: .5rem; text-transform: uppercase; letter-spacing: .04em; }
+.article-prose { max-width: 68ch; margin-inline: auto; overflow-wrap: anywhere; font-size: 1.0625rem; line-height: 1.75; }
+.article-prose li { padding-inline-start: .15em; }
+.article-prose li > p { margin-block: .5em; }
+.article-prose h1 { font-size: clamp(1.875rem, 1.25rem + 2vw, 2.5rem); line-height: 1.2; text-wrap: balance; }
+.article-prose table { display: block; overflow-x: auto; }
+.article-layout { position: relative; }
+.article-sidebar-ad { display: none; }
+@media (min-width: 1280px) {
+  .article-layout { padding-left: 192px; }
+  .article-sidebar-ad { display: block; position: absolute; left: 0; top: 4rem; width: 160px; }
+}
+@media (min-width: 640px) { .article-prose { font-size: 1.125rem; } }
+@media print { .ad-slot { display: none; } }
+
+.category-sidebar { display: none; }
+@media (min-width: 1280px) {
+  .category-columns { display: grid; grid-template-columns: minmax(0, 1fr) 160px; gap: 2rem; }
+  .category-sidebar { display: block; }
+}

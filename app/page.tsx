@@ -1,3 +1,6 @@
+import Banner from '@/components/ads/Banner';
+import SocialBar from '@/components/ads/SocialBar';
+import { Fragment } from 'react';
 import Link from "next/link";
 import { getAllCategories } from "@/lib/content";
 import { getAllArticles } from "@/lib/content";
@@ -18,9 +21,9 @@ export default async function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-primary text-white py-16">
+      <section className="bg-primary text-white py-10 sm:py-16">
         <div className="container mx-auto px-4">
-          <h1 className="text-5xl font-bold mb-4">Physics Explained</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4">Physics Explained</h1>
           <p className="text-xl text-gray-200 mb-2">
             Understanding Physics, Simply Explained
           </p>
@@ -30,12 +33,15 @@ export default async function Home() {
         </div>
       </section>
 
+      <SocialBar />
+      <div className="container mx-auto px-4"><Banner position="top" /></div>
       {/* Featured Categories */}
       <section className="py-12 bg-surface">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8 text-primary">Featured Categories</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories.map((category) => (
+            {categories.map((category, index) => (
+              <Fragment key={category.id}>
               <Link
                 key={category.id}
                 href={`/categories/${category.slug}`}
@@ -48,6 +54,8 @@ export default async function Home() {
                   {category.description}
                 </p>
               </Link>
+              {index === 2 && <div className="col-span-full"><Banner position="middle" /></div>}
+              </Fragment>
             ))}
           </div>
         </div>
@@ -59,7 +67,8 @@ export default async function Home() {
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-8 text-primary">Featured Topics</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {featuredArticles.map((article) => (
+              {featuredArticles.map((article, index) => (
+                <Fragment key={article.id}>
                 <Link
                   key={article.id}
                   href={`/${article.slug}`}
@@ -75,6 +84,8 @@ export default async function Home() {
                     Read more →
                   </span>
                 </Link>
+                {index === 2 && <div className="col-span-full"><Banner position="lower" /></div>}
+                </Fragment>
               ))}
             </div>
           </div>
